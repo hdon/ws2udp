@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>ws2udp test client</title>
+    <script type="text/javascript">
+      var conn;
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOMContentLoaded');
+        conn = new WebSocket('ws://me.localdomain:23363/');
+        conn.onopen = function() {
+          console.log('WebSocket onopen');
+          sendPing();
+        }
+        conn.onmessage = function(evt) {
+          console.log('received data:', evt.data, new Date());
+          if (evt.data == 'pong')
+            setTimeout(sendPing, 1000);
+        }
+        function sendPing() {
+          console.log('sending ping:', new Date());
+          conn.send('ping');
+        }
+        console.log('webSocket:', conn);
+      });
+    </script>
+  </head>
+  <body>
+    
+  </body>
+</html>
