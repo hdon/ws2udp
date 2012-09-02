@@ -3,7 +3,7 @@ var http = require('http');
 var fs = require('fs');
 
 var httpServer = http.createServer(function(req, res) {
-  console.log('Request', req.method, req.url);
+  console.log('Local Server got request', req.method, req.url);
   if (req.method == 'GET') {
     if (req.url == '/') {
       res.writeHead(200, {'Content-Type': 'text/html', 'Connection': 'close'});
@@ -21,12 +21,12 @@ var httpServer = http.createServer(function(req, res) {
 
 var wsServer = new ws.Server({server:httpServer});
 wsServer.on('connection', function(conn) {
-  console.log('client connected');
+  console.log('Local Server got connection');
   conn.send('*anon connected*');
   conn.on('message', function(msg) {
-    console.log('client sent: %s', msg);
+    console.log('Local Server received "%s" from client', msg);
     if (msg == 'ping') {
-      console.log('sending pong');
+      console.log('Local Server sending pong to client');
       conn.send('pong');
     }
   });
